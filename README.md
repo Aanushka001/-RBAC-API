@@ -1,24 +1,28 @@
-```markdown
 # 🛡️ Role-Based Access Control (RBAC) API with React Frontend
 
-A scalable **FastAPI + MongoDB (Motor)** backend with JWT authentication and role-based access control, paired with a modern **React frontend** for testing and demonstration.  
+A scalable **FastAPI + MongoDB (Motor)** backend with JWT authentication and role-based access control, paired with a modern **React frontend** for testing and demonstration.
 
 ---
 
 ## 🗂️ Project Structure
 
 ```
-
-./backend/.env
-./backend/requirements.txt
-./backend/server.py
-./frontend/.env
-./frontend/package.json
-./frontend/src/components/
-./frontend/src/App.js
-./postman_collection.json
-./README.md
-
+rbac-app/
+├── backend/
+│   ├── .env
+│   ├── requirements.txt
+│   ├── server.py
+│   └── ...
+├── frontend/
+│   ├── .env
+│   ├── package.json
+│   ├── src/
+│   │   ├── components/
+│   │   ├── App.js
+│   │   └── ...
+│   └── ...
+├── postman_collection.json
+└── README.md
 ```
 
 ---
@@ -50,7 +54,7 @@ A scalable **FastAPI + MongoDB (Motor)** backend with JWT authentication and rol
 ## 🧱 Tech Stack
 
 | Component | Technology |
-|------------|-------------|
+|-----------|-------------|
 | Backend | FastAPI, Motor, MongoDB |
 | Auth | JWT |
 | Passwords | Bcrypt |
@@ -64,7 +68,7 @@ A scalable **FastAPI + MongoDB (Motor)** backend with JWT authentication and rol
 ## 🧩 MongoDB Setup (Compass / CLI)
 
 **Database:** `Assignment`  
-**Collections:**  
+**Collections:**
 - `users`
 - `admins`
 - `tasks`
@@ -73,54 +77,48 @@ A scalable **FastAPI + MongoDB (Motor)** backend with JWT authentication and rol
 ### 🔌 Connect via MongoDB Compass
 
 1. Open **MongoDB Compass**
-2. Click **“New Connection”**
+2. Click **"New Connection"**
 3. Use the following connection string:
-```
-
-mongodb://localhost:27017
-
-```
+   ```
+   mongodb://localhost:27017
+   ```
 4. Once connected, select the database:
-```
-
-Assignment
-
-````
-5. You’ll see four collections:
-- `users`
-- `admins`
-- `tasks`
-- `notes`
+   ```
+   Assignment
+   ```
+5. You'll see four collections:
+   - `users`
+   - `admins`
+   - `tasks`
+   - `notes`
 
 ### 🧭 Example Documents
 
 #### Collection: `users`
 ```json
 {
-"_id": "uuid",
-"name": "John Doe",
-"email": "john@example.com",
-"password": "$2b$12$hashedpassword",
-"role": "user",
-"created_at": "2025-11-10T12:00:00Z"
+  "_id": "uuid",
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "$2b$12$hashedpassword",
+  "role": "user",
+  "created_at": "2025-11-10T12:00:00Z"
 }
-````
+```
 
 #### Collection: `admins`
-
 ```json
 {
   "_id": "uuid",
   "name": "Aanushka",
   "email": "aanushka@admin.com",
-  "password": "Admin@123",
+  "password": "$2b$12$hashedpassword",
   "role": "admin",
   "created_at": "2025-11-10T12:00:00Z"
 }
 ```
 
 #### Collection: `tasks`
-
 ```json
 {
   "_id": "uuid",
@@ -135,7 +133,6 @@ Assignment
 ```
 
 #### Collection: `notes`
-
 ```json
 {
   "_id": "uuid",
@@ -152,11 +149,11 @@ Assignment
 
 ## 🔐 Default Admin Accounts (Testing)
 
-| Name      | Email                                           | Password  | Role  |
-| --------- | ----------------------------------------------- | --------- | ----- |
-| Aanushka  | [aanushka@admin.com](mailto:aanushka@admin.com) | Admin@123 | admin |
-| Admin One | [admin1@admin.com](mailto:admin1@admin.com)     | Admin@123 | admin |
-| Admin Two | [admin2@admin.com](mailto:admin2@admin.com)     | Admin@123 | admin |
+| Name | Email | Password | Role |
+|------|-------|----------|------|
+| Aanushka | aanushka@admin.com | Admin@123 | admin |
+| Admin One | admin1@admin.com | Admin@123 | admin |
+| Admin Two | admin2@admin.com | Admin@123 | admin |
 
 ✅ You can log in with these accounts from the **React frontend** or directly via **Postman**.
 
@@ -189,7 +186,7 @@ uvicorn server:app --reload --port 8000
 ```
 
 Backend will be available at:
-👉 `http://localhost:8001/api/v1`
+👉 `http://localhost:8000/api/v1`
 
 ---
 
@@ -198,7 +195,7 @@ Backend will be available at:
 **File:** `./frontend/.env`
 
 ```env
-REACT_APP_BACKEND_URL=http://localhost:3000
+REACT_APP_BACKEND_URL=http://localhost:8000
 ```
 
 ### 📦 Install & Start
@@ -216,18 +213,18 @@ Frontend will be available at:
 
 ## 🧾 API Overview
 
-| Endpoint                | Method     | Auth      | Description        |
-| ----------------------- | ---------- | --------- | ------------------ |
-| `/api/v1/auth/register` | POST       | ❌         | Register new user  |
-| `/api/v1/auth/login`    | POST       | ✅         | Login and get JWT  |
-| `/api/v1/auth/me`       | GET        | ✅         | Get current user   |
-| `/api/v1/tasks`         | GET/POST   | ✅         | Manage user tasks  |
-| `/api/v1/tasks/{id}`    | PUT/DELETE | ✅         | Update/Delete task |
-| `/api/v1/notes`         | GET/POST   | ✅         | Manage notes       |
-| `/api/v1/notes/{id}`    | PUT/DELETE | ✅         | Update/Delete note |
-| `/api/v1/users`         | GET        | ✅ (admin) | List all users     |
-| `/api/v1/users/{id}`    | DELETE     | ✅ (admin) | Delete user        |
-| `/api/v1/health`        | GET        | ❌         | Health check       |
+| Endpoint | Method | Auth | Description |
+|----------|--------|------|-------------|
+| `/api/v1/auth/register` | POST | ❌ | Register new user |
+| `/api/v1/auth/login` | POST | ❌ | Login and get JWT |
+| `/api/v1/auth/me` | GET | ✅ | Get current user |
+| `/api/v1/tasks` | GET/POST | ✅ | Manage user tasks |
+| `/api/v1/tasks/{id}` | PUT/DELETE | ✅ | Update/Delete task |
+| `/api/v1/notes` | GET/POST | ✅ | Manage notes |
+| `/api/v1/notes/{id}` | PUT/DELETE | ✅ | Update/Delete note |
+| `/api/v1/users` | GET | ✅ (admin) | List all users |
+| `/api/v1/users/{id}` | DELETE | ✅ (admin) | Delete user |
+| `/api/v1/health` | GET | ❌ | Health check |
 
 ---
 
@@ -236,31 +233,31 @@ Frontend will be available at:
 **Login (Admin):**
 
 ```bash
-curl -X POST http://localhost:8001/api/v1/auth/login \
--H "Content-Type: application/json" \
--d '{"email":"aanushka@admin.com","password":"Admin@123"}'
+curl -X POST http://localhost:8000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"aanushka@admin.com","password":"Admin@123"}'
 ```
 
 **Create Task:**
 
 ```bash
 TOKEN="your_jwt_here"
-curl -X POST http://localhost:8001/api/v1/tasks \
--H "Authorization: Bearer $TOKEN" \
--H "Content-Type: application/json" \
--d '{"title":"Write Docs","description":"Finish the README","status":"todo","priority":"high"}'
+curl -X POST http://localhost:8000/api/v1/tasks \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Write Docs","description":"Finish the README","status":"todo","priority":"high"}'
 ```
 
 **Get All Tasks:**
 
 ```bash
-curl -H "Authorization: Bearer $TOKEN" http://localhost:8001/api/v1/tasks
+curl -H "Authorization: Bearer $TOKEN" http://localhost:8000/api/v1/tasks
 ```
 
 **Admin - Get All Users:**
 
 ```bash
-curl -H "Authorization: Bearer $TOKEN" http://localhost:8001/api/v1/users
+curl -H "Authorization: Bearer $TOKEN" http://localhost:8000/api/v1/users
 ```
 
 ---
@@ -269,10 +266,26 @@ curl -H "Authorization: Bearer $TOKEN" http://localhost:8001/api/v1/users
 
 Run in Compass or mongo shell:
 
-```js
+```javascript
 use Assignment
-db.users.createIndex({ "email": 4 }, { unique: true })
-db.tasks.createIndex({ "user_id": 4 })
-db.notes.createIndex({ "user_id": 4 })
-db.admins.createIndex({ "email": 4}, { unique: true })
+db.users.createIndex({ "email": 1 }, { unique: true })
+db.tasks.createIndex({ "user_id": 1 })
+db.notes.createIndex({ "user_id": 1 })
+db.admins.createIndex({ "email": 1 }, { unique: true })
 ```
+
+---
+
+### Backend Deployment
+- Use Uvicorn with supervisor for production
+- Set proper CORS origins for your domain
+- Use environment variables for secrets
+- Consider using MongoDB Compass for  database
+
+### Frontend Deployment
+- Build with `npm run build`
+
+---
+
+
+**Happy Coding! 🎉**
