@@ -9,6 +9,7 @@ from datetime import datetime, timezone, timedelta
 from enum import Enum
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
+from bson import ObjectId
 import jwt
 import logging
 import os
@@ -162,8 +163,7 @@ async def register(user_data: UserCreate):
 
 @api_router.post("/auth/login", response_model=Token)
 async def login(user_data: UserLogin):
-    user = await app.db.users.find_one({"email": user_data.email}) or \
-           await app.db.admins.find_one({"email": user_data.email})
+    user = await app.db.users.find_one({"email": user_data.email}) or await app.db.admins.find_one({"email": user_data.email})
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     if user.get("role") == "admin":
@@ -173,6 +173,7 @@ async def login(user_data: UserLogin):
         if not verify_password(user_data.password, user["password"]):
             raise HTTPException(status_code=401, detail="Invalid credentials")
     token = create_access_token({"email": user["email"], "role": user["role"]})
+    created_at = user["created_at"].isoformat() if isinstance(user["created_at"], datetime) else str(user["created_at"])
     return Token(
         access_token=token,
         token_type="bearer",
@@ -181,7 +182,7 @@ async def login(user_data: UserLogin):
             email=user["email"],
             name=user["name"],
             role=user["role"],
-            created_at=user["created_at"].isoformat() if isinstance(user["created_at"], datetime) else str(user["created_at"])
+            created_at=created_at
         )
     )
 
@@ -190,8 +191,8 @@ async def get_tasks(current_user=Depends(get_current_user)):
     tasks = await app.db.tasks.find({"user_id": current_user["user_id"]}).to_list(100)
     for task in tasks:
         task["id"] = str(task["_id"])
-        task["created_at"] = task["created_at"].isoformat()
-        task["updated_at"] = task["updated_at"].isoformat()
+        task["created_at"] = task["created_at"].isoformat() if isinstance(task["created_at"], datetime) else str(task["created_at"])
+        task["updated_at"] = task["updated_at"].isoformat() if isinstance(task["updated_at"], datetime) else str(task["updated_at"])
     return tasks
 
 @api_router.post("/tasks", response_model=TaskResponse)
@@ -211,8 +212,8 @@ async def get_notes(current_user=Depends(get_current_user)):
     notes = await app.db.notes.find({"user_id": current_user["user_id"]}).to_list(100)
     for note in notes:
         note["id"] = str(note["_id"])
-        note["created_at"] = note["created_at"].isoformat()
-        note["updated_at"] = note["updated_at"].isoformat()
+        note["created_at"] = note["created_at"].isoformat() if isinstance(note["created_at"], datetime) else str(note["created_at"])
+        note["updated_at"] = note["updated_at"].isoformat() if isinstance(note["updated_at"], datetime) else str(note["updated_at"])
     return notes
 
 @api_router.post("/notes", response_model=NoteResponse)
@@ -234,31 +235,24 @@ async def get_users(current_user=Depends(get_current_user)):
     users = await app.db.users.find().to_list(100)
     for user in users:
         user["id"] = str(user["_id"])
-        if isinstance(user["created_at"], datetime):
-            user["created_at"] = user["created_at"].isoformat()
+        user["created_at"] = user["created_at"].isoformat() if isinstance(user["created_at"], datetime) else str(user["created_at"])
     return users
+
+@api_router.delete("/users/{user_id}")
+async def delete_user(user_id: str, current_user=Depends(get_current_user)):
+    if current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized")
+    result = await app.db.users.delete_one({"_id": ObjectId(user_id)})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"message": "User deleted successfully"}
 
 @app.get("/")
 async def root():
-    return {
-        "message": "🚀 FastAPI Assignment API is running",
-        "endpoints": [
-            "/api/v1/auth/register",
-            "/api/v1/auth/login",
-            "/api/v1/tasks",
-            "/api/v1/notes",
-            "/api/v1/users",
-        ]
-    }
+    return {"message": "🚀 FastAPI Assignment API is running", "endpoints": ["/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/tasks", "/api/v1/notes", "/api/v1/users"]}
 
 app.include_router(api_router)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*", "http://localhost:3000", "http://127.0.0.1:3000"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
+app.add_middleware(CORSMiddleware, allow_origins=["*", "http://localhost:3000", "http://127.0.0.1:3000"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
 if __name__ == "__main__":
     import uvicorn
