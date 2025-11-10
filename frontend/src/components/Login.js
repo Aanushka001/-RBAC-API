@@ -84,11 +84,6 @@ const Login = ({ setIsAuthenticated, setUser, API }) => {
           Don't have an account? <Link to="/register" data-testid="register-link">Register</Link>
         </div>
 
-        <div className="auth-footer" style={{ marginTop: '16px', fontSize: '0.85rem' }}>
-          <strong>Test Admin Account:</strong><br />
-          Email: aanushka@admin.com<br />
-          Password: Admin@123
-        </div>
       </div>
     </div>
   );
