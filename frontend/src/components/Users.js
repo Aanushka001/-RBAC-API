@@ -65,7 +65,7 @@ const Users = ({ API }) => {
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr key={user._id} data-testid={`user-row-${user._id}`}>
+              <tr key={user.id} data-testid={`user-row-${user.id}`}>
                 <td data-testid="user-name">{user.name}</td>
                 <td data-testid="user-email">{user.email}</td>
                 <td>
@@ -82,7 +82,7 @@ const Users = ({ API }) => {
                 <td>
                   <button
                     className="btn-delete"
-                    onClick={() => handleDelete(user._id)}
+                    onClick={() => handleDelete(user.id)}
                     data-testid="delete-user-button"
                   >
                     Delete

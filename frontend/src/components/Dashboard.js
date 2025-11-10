@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import axios from "axios";
 import Tasks from "./Tasks";
 import Notes from "./Notes";
 import Users from "./Users";
