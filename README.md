@@ -1,291 +1,277 @@
-# 🛡️ Role-Based Access Control (RBAC) API with React Frontend
+# 🛡️ Role-Based Access Control (RBAC) System
 
-A scalable **FastAPI + MongoDB (Motor)** backend with JWT authentication and role-based access control, paired with a modern **React frontend** for testing and demonstration.
+A complete full-stack application built with a **FastAPI backend** and **React frontend**, featuring JWT authentication, role-based access control, and comprehensive user management.
+
+---
+
+## 📸 Application Screenshots
+
+<div align="center">
+
+### 🔐 Authentication Pages
+**Login Interface**  
+![Login Screenshot](frontend/public/images/login-screenshot.png)  
+User login with email and password fields.
+
+**Registration Interface**  
+![Register Screenshot](frontend/public/images/register-screenshot.png)  
+User registration for creating new accounts.
+
+### 🎯 Dashboard & Management
+**Main Dashboard**  
+![Dashboard Screenshot](frontend/public/images/dashboard-screenshot.png)  
+Dashboard with navigation and user management.
+
+**User Management**  
+![Users Screenshot](frontend/public/images/users-screenshot.png)  
+Admin panel showing user list with actions.
+
+</div>
+
+---
+
+## 🚀 Features
+
+### 🧩 Backend
+- Secure JWT Authentication & Role-Based Access (User/Admin)
+- Password hashing with bcrypt
+- Asynchronous MongoDB integration using Motor
+- Automatic admin user creation on startup
+- RESTful API with Pydantic validation and clear error handling
+- Proper CORS configuration for frontend integration
+
+### 💻 Frontend
+- Modern, responsive React UI built with shadcn/components
+- Role-protected routes and JWT-based authentication
+- Real-time dashboard for managing tasks and notes
+- Admin panel for user management
+- Form validation with smooth UX and error feedback
 
 ---
 
 ## 🗂️ Project Structure
 
-```
-rbac-app/
-├── backend/
+```plaintext
+.
+├── .gitignore
+├── backend
 │   ├── .env
 │   ├── requirements.txt
 │   ├── server.py
-│   └── ...
-├── frontend/
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   └── server.cpython-313.pyc
+├── frontend
 │   ├── .env
+│   ├── .gitignore
+│   ├── components.json
+│   ├── craco.config.js
+│   ├── package-lock.json
 │   ├── package.json
-│   ├── src/
-│   │   ├── components/
+│   ├── postcss.config.js
+│   ├── public
+│   │   ├── favicon.ico
+│   │   ├── images
+│   │   │   ├── dashboard-screenshot.png
+│   │   │   ├── login-screenshot.png
+│   │   │   ├── register-screenshot.png
+│   │   │   ├── users-screenshot.png
+│   │   ├── index.html
+│   ├── src
+│   │   ├── App.css
 │   │   ├── App.js
-│   │   └── ...
-│   └── ...
+│   │   ├── App.test.js
+│   │   ├── components
+│   │   │   ├── Dashboard.js
+│   │   │   ├── Login.js
+│   │   │   ├── Notes.js
+│   │   │   ├── Register.js
+│   │   │   ├── Tasks.js
+│   │   │   ├── ui
+│   │   │   │   ├── *.jsx (UI components)
+│   │   │   ├── Users.js
+│   │   ├── hooks
+│   │   │   └── use-toast.js
+│   │   ├── index.css
+│   │   ├── index.js
+│   │   ├── lib
+│   │   │   └── utlis.js
+│   │   ├── logo.svg
+│   │   ├── reportWebVitals.js
+│   │   ├── setupTests.js
+│   │   ├── utils.js
 ├── postman_collection.json
-└── README.md
-```
+├── project_structure.txt
+├── README.md
+````
 
 ---
 
-## ⚙️ Features
+## ⚙️ Quick Start
 
-### 🔧 Backend
-- JWT Authentication (Login/Register)
-- Password hashing (bcrypt)
-- Role-Based Access Control (`user` / `admin`)
-- CRUD for Tasks and Notes
-- Admin-only user management
-- Async MongoDB with Motor
-- Auto-admin seeding
-- API versioning (`/api/v1`)
-- Pydantic validation & error handling
+### Prerequisites
 
-### 💻 Frontend
-- React 19 + React Router
-- Login/Register/Dashboard UI
-- Task & Note Management
-- Admin User Management
-- JWT Token handling (localStorage)
-- Protected routes based on roles
-- Responsive modern UI
+* Python 3.8+
+* Node.js 16+
+* MongoDB (Compass optional)
+* Git
 
 ---
 
-## 🧱 Tech Stack
-
-| Component | Technology |
-|-----------|-------------|
-| Backend | FastAPI, Motor, MongoDB |
-| Auth | JWT |
-| Passwords | Bcrypt |
-| Frontend | React 19 |
-| HTTP | Axios |
-| Validation | Pydantic |
-| Deployment | Supervisor / Uvicorn |
-
----
-
-## 🧩 MongoDB Setup (Compass / CLI)
-
-**Database:** `Assignment`  
-**Collections:**
-- `users`
-- `admins`
-- `tasks`
-- `notes`
-
-### 🔌 Connect via MongoDB Compass
-
-1. Open **MongoDB Compass**
-2. Click **"New Connection"**
-3. Use the following connection string:
-   ```
-   mongodb://localhost:27017
-   ```
-4. Once connected, select the database:
-   ```
-   Assignment
-   ```
-5. You'll see four collections:
-   - `users`
-   - `admins`
-   - `tasks`
-   - `notes`
-
-### 🧭 Example Documents
-
-#### Collection: `users`
-```json
-{
-  "_id": "uuid",
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "$2b$12$hashedpassword",
-  "role": "user",
-  "created_at": "2025-11-10T12:00:00Z"
-}
-```
-
-#### Collection: `admins`
-```json
-{
-  "_id": "uuid",
-  "name": "Aanushka",
-  "email": "aanushka@admin.com",
-  "password": "$2b$12$hashedpassword",
-  "role": "admin",
-  "created_at": "2025-11-10T12:00:00Z"
-}
-```
-
-#### Collection: `tasks`
-```json
-{
-  "_id": "uuid",
-  "title": "Complete project docs",
-  "description": "Finalize the README and Postman collection",
-  "status": "in_progress",
-  "priority": "high",
-  "user_id": "uuid",
-  "created_at": "2025-11-10T12:00:00Z",
-  "updated_at": "2025-11-10T12:00:00Z"
-}
-```
-
-#### Collection: `notes`
-```json
-{
-  "_id": "uuid",
-  "title": "Meeting Notes",
-  "content": "Discussed task assignments and progress",
-  "tags": ["meeting", "project"],
-  "user_id": "uuid",
-  "created_at": "2025-11-10T12:00:00Z",
-  "updated_at": "2025-11-10T12:00:00Z"
-}
-```
-
----
-
-## 🔐 Default Admin Accounts (Testing)
-
-| Name | Email | Password | Role |
-|------|-------|----------|------|
-| Aanushka | aanushka@admin.com | Admin@123 | admin |
-| Admin One | admin1@admin.com | Admin@123 | admin |
-| Admin Two | admin2@admin.com | Admin@123 | admin |
-
-✅ You can log in with these accounts from the **React frontend** or directly via **Postman**.
-
----
-
-## 🧮 Backend Configuration
-
-**File:** `./backend/.env`
-
-```env
-MONGO_URL="mongodb://localhost:27017"
-DB_NAME="Assignment"
-CORS_ORIGINS="http://localhost:3000"
-JWT_SECRET_KEY="supersecretlocalkey"
-JWT_ALGORITHM="HS256"
-JWT_EXPIRATION_MINUTES=1440
-```
-
-### 📦 Install dependencies
+### 🧠 Step 1: Backend Setup
 
 ```bash
 cd backend
 pip install -r requirements.txt
 ```
 
-### ▶️ Run the server
+Create a `.env` file:
 
-```bash
-uvicorn server:app --reload --port 8000
+```env
+MONGO_URL=mongodb://localhost:27017
+DB_NAME=Assignment
+JWT_SECRET_KEY=your-super-secret-jwt-key-here
+JWT_ALGORITHM=HS256
+JWT_EXPIRATION_MINUTES=1440
+CORS_ORIGINS=http://localhost:3000
 ```
 
-Backend will be available at:
-👉 `http://localhost:8000/api/v1`
+Run the backend:
+
+```bash
+python server.py
+```
+
+Backend runs at: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ---
 
-## 🌐 Frontend Configuration
-
-**File:** `./frontend/.env`
-
-```env
-REACT_APP_BACKEND_URL=http://localhost:8000
-```
-
-### 📦 Install & Start
+### 🪄 Step 2: Frontend Setup
 
 ```bash
 cd frontend
 npm install
+echo "REACT_APP_BACKEND_URL=http://127.0.0.1:8000/api/v1" > .env
 npm start
 ```
 
-Frontend will be available at:
-👉 `http://localhost:3000`
+Frontend runs at: [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 🧾 API Overview
+## 🧪 Testing Accounts
 
-| Endpoint | Method | Auth | Description |
-|----------|--------|------|-------------|
-| `/api/v1/auth/register` | POST | ❌ | Register new user |
-| `/api/v1/auth/login` | POST | ❌ | Login and get JWT |
-| `/api/v1/auth/me` | GET | ✅ | Get current user |
-| `/api/v1/tasks` | GET/POST | ✅ | Manage user tasks |
-| `/api/v1/tasks/{id}` | PUT/DELETE | ✅ | Update/Delete task |
-| `/api/v1/notes` | GET/POST | ✅ | Manage notes |
-| `/api/v1/notes/{id}` | PUT/DELETE | ✅ | Update/Delete note |
-| `/api/v1/users` | GET | ✅ (admin) | List all users |
-| `/api/v1/users/{id}` | DELETE | ✅ (admin) | Delete user |
-| `/api/v1/health` | GET | ❌ | Health check |
+### Admin Accounts
+
+| Email                | Password    | Role  |
+| -------------------- | ----------- | ----- |
+| `aanushka@admin.com` | `Admin@123` | admin |
+| `admin1@admin.com`   | `Admin@123` | admin |
+| `admin2@admin.com`   | `Admin@123` | admin |
+
+### Regular User
+
+* Register via the signup page
+* Or use: `testuser@example.com` / `User@123`
 
 ---
 
-## 🧰 Quick cURL Tests
+## 🗄️ MongoDB Compass Setup
 
-**Login (Admin):**
+### Connection Details
+
+* **Connection String:** `mongodb://localhost:27017`
+* **Database:** `Assignment`
+* **Collections:** `users`, `admins`, `tasks`, `notes`
+
+### Steps
+
+1. Open MongoDB Compass
+2. Click **New Connection**
+3. Paste the connection string
+4. Click **Connect**
+5. Select database **Assignment**
+
+---
+
+## 📚 API Endpoints
+
+### Authentication
+
+| Method | Endpoint                | Description       | Access        |
+| ------ | ----------------------- | ----------------- | ------------- |
+| POST   | `/api/v1/auth/register` | Register new user | Public        |
+| POST   | `/api/v1/auth/login`    | Login user        | Public        |
+| GET    | `/api/v1/auth/me`       | Get current user  | Authenticated |
+
+### Tasks
+
+| Method | Endpoint             | Description     | Access        |
+| ------ | -------------------- | --------------- | ------------- |
+| GET    | `/api/v1/tasks`      | Get all tasks   | Authenticated |
+| POST   | `/api/v1/tasks`      | Create new task | Authenticated |
+| PUT    | `/api/v1/tasks/{id}` | Update task     | Owner only    |
+| DELETE | `/api/v1/tasks/{id}` | Delete task     | Owner only    |
+
+### Notes
+
+| Method | Endpoint             | Description     | Access        |
+| ------ | -------------------- | --------------- | ------------- |
+| GET    | `/api/v1/notes`      | Get all notes   | Authenticated |
+| POST   | `/api/v1/notes`      | Create new note | Authenticated |
+| PUT    | `/api/v1/notes/{id}` | Update note     | Owner only    |
+| DELETE | `/api/v1/notes/{id}` | Delete note     | Owner only    |
+
+### User Management (Admin)
+
+| Method | Endpoint             | Description   | Access     |
+| ------ | -------------------- | ------------- | ---------- |
+| GET    | `/api/v1/users`      | Get all users | Admin only |
+| DELETE | `/api/v1/users/{id}` | Delete user   | Admin only |
+
+---
+
+## 🛠️ Troubleshooting
+
+**Common Issues**
+
+* Ensure MongoDB service is running
+* Verify backend `.env` connection string
+* Check CORS origins include `http://localhost:3000`
+* Confirm `REACT_APP_BACKEND_URL` in frontend `.env`
+
+---
+
+## 🚀 Production Deployment
+
+### Backend
 
 ```bash
-curl -X POST http://localhost:8000/api/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"aanushka@admin.com","password":"Admin@123"}'
+pip install -r requirements.txt
+python server.py
 ```
 
-**Create Task:**
+### Environment Example
 
-```bash
-TOKEN="your_jwt_here"
-curl -X POST http://localhost:8000/api/v1/tasks \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"title":"Write Docs","description":"Finish the README","status":"todo","priority":"high"}'
-```
-
-**Get All Tasks:**
-
-```bash
-curl -H "Authorization: Bearer $TOKEN" http://localhost:8000/api/v1/tasks
-```
-
-**Admin - Get All Users:**
-
-```bash
-curl -H "Authorization: Bearer $TOKEN" http://localhost:8000/api/v1/users
+```env
+MONGO_URL=your_production_mongodb_url
+JWT_SECRET_KEY=your_strong_production_secret
+CORS_ORIGINS=your_frontend_domain
 ```
 
 ---
 
-## 🧠 MongoDB Index Recommendations
+## 🔄 Development Workflow
 
-Run in Compass or mongo shell:
+1. Start MongoDB
+2. Run Backend → `cd backend && python server.py`
+3. Access: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+4. Run Frontend → `cd frontend && npm start`
+5. Access: [http://localhost:3000](http://localhost:3000)
+6. Test with admin or new user accounts
 
-```javascript
-use Assignment
-db.users.createIndex({ "email": 1 }, { unique: true })
-db.tasks.createIndex({ "user_id": 1 })
-db.notes.createIndex({ "user_id": 1 })
-db.admins.createIndex({ "email": 1 }, { unique: true })
+---
+
+**✅ Ready to use! Access your application at [http://localhost:3000](http://localhost:3000)**
+
 ```
-
----
-
-### Backend Deployment
-- Use Uvicorn with supervisor for production
-- Set proper CORS origins for your domain
-- Use environment variables for secrets
-- Consider using MongoDB Compass for  database
-
-### Frontend Deployment
-- Build with `npm run build`
-
----
-
-
-**Happy Coding! 🎉**

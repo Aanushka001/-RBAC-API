@@ -1,3 +1,4 @@
+
 .
 ├── .gitignore
 ├── backend
@@ -17,11 +18,12 @@
 │   ├── postcss.config.js
 │   ├── public
 │   │   ├── favicon.ico
+│   │   ├── images
+│   │   │   ├── dashboard-screenshot.png
+│   │   │   ├── login-screenshot.png
+│   │   │   ├── register-screenshot.png
+│   │   │   ├── users-screenshot.png
 │   │   ├── index.html
-│   │   ├── logo192.png
-│   │   ├── logo512.png
-│   │   ├── manifest.json
-│   │   ├── robots.txt
 │   ├── src
 │   │   ├── App.css
 │   │   ├── App.js
@@ -80,12 +82,6 @@
 │   │   │   │   ├── toggle.jsx
 │   │   │   │   ├── tooltip.jsx
 │   │   │   ├── Users.js
-│   │   ├── dev
-│   │   │   ├── babel-metadata-plugin.js
-│   │   │   ├── dev-server-setup.js
-│   │   │   ├── health-endpoints.js
-│   │   │   ├── README.md
-│   │   │   ├── webpack-health-plugin.js
 │   │   ├── hooks
 │   │   │   ├── use-toast.js
 │   │   ├── index.css
